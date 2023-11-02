@@ -157,7 +157,7 @@ int load_program_as_json_value ( edy_program **const pp_edy_program, const json_
                 strncpy(p_edy_program->input[i]._name, p_name->string, 255);
 
                 // Store the type of the input
-                p_edy_program->input[i]._type = dict_get(p_edy_type_lut, p_type->string);
+                p_edy_program->input[i]._type = (enum edy_type) dict_get(p_edy_type_lut, p_type->string);
             }
         }
     }
@@ -204,7 +204,7 @@ int load_program_as_json_value ( edy_program **const pp_edy_program, const json_
                 strncpy(p_edy_program->output[i]._name, p_name->string, 255);
 
                 // Store the type of the output
-                p_edy_program->output[i]._type = dict_get(p_edy_type_lut, p_type->string);
+                p_edy_program->output[i]._type = (enum edy_type) dict_get(p_edy_type_lut, p_type->string);
             }
         }
     }
