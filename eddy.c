@@ -1,6 +1,6 @@
-#include <edy/edy.h>
+#include <eddy/eddy.h>
 
-void edy_init ( void )
+void eddy_init ( void )
 {
 
     // External data
@@ -47,7 +47,7 @@ size_t load_file ( const char *path, void *buffer, bool binary_mode )
         {
             no_path:
                 #ifndef NDEBUG
-                    log_error("[edy] Null path provided to function \"%s\n", __FUNCTION__);
+                    log_error("[eddy] Null path provided to function \"%s\n", __FUNCTION__);
                 #endif
 
                 // Error

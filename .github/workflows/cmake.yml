@@ -1,4 +1,4 @@
-name: edy
+name: eddy
 
 on:
   push:
@@ -37,4 +37,4 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: |
         cp ${{github.workspace}}/example_program.json ${{github.workspace}}/build/example_program.json
-        ${{github.workspace}}/build/edy_example
+        ${{github.workspace}}/build/eddy_example

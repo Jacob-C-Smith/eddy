@@ -2,7 +2,7 @@
 cmake_minimum_required (VERSION 3.0)
 
 # This is the name of the repository
-project ("edy")
+project ("eddy")
 
 # Set the correct paths
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
@@ -21,7 +21,7 @@ endif ()
 if ( NOT "${HAS_ARRAY}")
     
     # Log
-    message("[edy] Adding array project")
+    message("[eddy] Adding array project")
     
     # Add the array directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/array ${CMAKE_SOURCE_DIR}/build/array)
@@ -34,7 +34,7 @@ endif()
 if ( NOT "${HAS_DICT}")
     
     # Log
-    message("[edy] Adding dict project")
+    message("[eddy] Adding dict project")
     
     # Add the dict directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/dict ${CMAKE_SOURCE_DIR}/build/dict)
@@ -47,7 +47,7 @@ endif()
 if ( NOT "${HAS_JSON}")
 
     # Log
-    message("[edy] Adding json project")
+    message("[eddy] Adding json project")
 
     # Add the json directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/json ${CMAKE_SOURCE_DIR}/build/json)
@@ -60,7 +60,7 @@ endif()
 if ( NOT "${HAS_SYNC}")
 
     # Log
-    message("[edy] Adding sync project")
+    message("[eddy] Adding sync project")
 
     # Add the sync directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/sync ${CMAKE_SOURCE_DIR}/build/sync)
@@ -73,7 +73,7 @@ endif()
 if ( NOT "${HAS_CRYPTO}")
     
     # Log
-    message("[edy] Adding crypto project")
+    message("[eddy] Adding crypto project")
     
     # Add the crypto directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/crypto ${CMAKE_SOURCE_DIR}/build/crypto)
@@ -86,7 +86,7 @@ endif()
 if ( NOT "${HAS_LOG}")
     
     # Log
-    message("[edy] Adding log project")
+    message("[eddy] Adding log project")
     
     # Add the log directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/log ${CMAKE_SOURCE_DIR}/build/log)
@@ -99,7 +99,7 @@ endif()
 if ( NOT "${HAS_BASE64}")
     
     # Log
-    message("[edy] Adding base64 project")
+    message("[eddy] Adding base64 project")
     
     # Add the base64 directory
     add_subdirectory(${CMAKE_SOURCE_DIR}/extern/base-64 ${CMAKE_SOURCE_DIR}/build/base64)
@@ -109,18 +109,18 @@ if ( NOT "${HAS_BASE64}")
 endif()
 
 
-# Set the edy module
-if ( NOT "${HAS_EDY}")
+# Set the eddy module
+if ( NOT "${HAS_EDDY}")
 
     # Log
-    message("[edy] Adding edy project")
+    message("[eddy] Adding eddy project")
 
-    # Let any parent project know that it has the edy project
-    set(HAS_EDY true PARENT_SCOPE)
+    # Let any parent project know that it has the eddy project
+    set(HAS_EDDY true PARENT_SCOPE)
 endif()
 
 # Add source to this project's executable.
-add_executable (edy_example "main.c" "edy.c" "program.c")
-add_dependencies(edy_example json array dict sync log base64)
-target_include_directories(edy_example PUBLIC include include/edy ${CMAKE_SOURCE_DIR}/extern/log/include/ ${CMAKE_SOURCE_DIR}/extern/json/include/ ${CMAKE_SOURCE_DIR}/extern/array/include/ ${CMAKE_SOURCE_DIR}/extern/dict/include/ ${CMAKE_SOURCE_DIR}/extern/sync/include/)
-target_link_libraries(edy_example json array dict sync log base64)
+add_executable (eddy_example "main.c" "eddy.c" "program.c")
+add_dependencies(eddy_example json array dict sync log base64)
+target_include_directories(eddy_example PUBLIC include include/eddy ${CMAKE_SOURCE_DIR}/extern/log/include/ ${CMAKE_SOURCE_DIR}/extern/json/include/ ${CMAKE_SOURCE_DIR}/extern/array/include/ ${CMAKE_SOURCE_DIR}/extern/dict/include/ ${CMAKE_SOURCE_DIR}/extern/sync/include/)
+target_link_libraries(eddy_example json array dict sync log base64)

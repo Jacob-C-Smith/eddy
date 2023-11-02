@@ -1,5 +1,5 @@
 /** !
- * edy runtime 
+ * eddy runtime 
  * 
  * @author Jacob Smith
  * @file main.c
@@ -27,9 +27,9 @@
 // base64 submodule
 #include <base64/base64.h>
 
-// edy
-#include <edy/edy.h>
-#include <edy/program.h>
+// eddy
+#include <eddy/eddy.h>
+#include <eddy/program.h>
 
 // Entry point
 int main ( int argc, const char *const argv[] )
@@ -44,25 +44,25 @@ int main ( int argc, const char *const argv[] )
     size_t program_file_size = load_file(program_path, 0, false);
     char *program_file_content = realloc(0, program_file_size * sizeof(char) + 1);
     json_value *p_program_file_json = 0;
-    edy_program *p_edy_program = (void *) 0;
+    eddy_program *p_eddy_program = (void *) 0;
 
-    // Initialize the edy runtime dependencies
-    edy_init();
+    // Initialize the eddy runtime dependencies
+    eddy_init();
 
-    // Load the edy schema
+    // Load the eddy schema
     if ( load_file(program_path, program_file_content, false) == 0 ) goto failed_to_read_file;
 
-    // Parse the edy schema file into a json value
+    // Parse the eddy schema file into a json value
     if ( parse_json_value(program_file_content, 0, &p_program_file_json) == 0 ) goto failed_to_parse_file_text;
 
-    // Parse the json object into an edy program
-    if ( load_program_as_json_value(&p_edy_program, p_program_file_json) == 0 ) goto failed_to_load_edy_program;
+    // Parse the json object into an eddy program
+    if ( load_program_as_json_value(&p_eddy_program, p_program_file_json) == 0 ) goto failed_to_load_eddy_program;
 
     // Write a description of the program to standard out
-    program_info(p_edy_program);
+    program_info(p_eddy_program);
 
     // Free the program
-    if ( program_destroy(&p_edy_program) == 0 ) goto failed_to_free_program;
+    if ( program_destroy(&p_eddy_program) == 0 ) goto failed_to_free_program;
 
     // Clean up resources
     free_json_value(p_program_file_json);
@@ -80,18 +80,18 @@ int main ( int argc, const char *const argv[] )
             print_usage:
 
                 // Print a usage message
-                printf("Usage: edy program_file.sced\n");
+                printf("Usage: eddy program_file.sced\n");
 
                 // Error handling
                 return EXIT_FAILURE;
         }
 
-        // edy errors
+        // eddy errors
         {
-            failed_to_load_edy_program:
+            failed_to_load_eddy_program:
 
                 // Write an error message to standard out 
-                log_error("[edy] Failed to load edy program in call to function \"%s\"\n", __FUNCTION__);
+                log_error("[eddy] Failed to load eddy program in call to function \"%s\"\n", __FUNCTION__);
 
                 // Error
                 return EXIT_FAILURE;
@@ -99,7 +99,7 @@ int main ( int argc, const char *const argv[] )
             failed_to_free_program:
 
                 // Write an error message to standard out 
-                log_error("[edy] Failed to free edy program in call to function \"%s\"\n", __FUNCTION__);
+                log_error("[eddy] Failed to free eddy program in call to function \"%s\"\n", __FUNCTION__);
 
                 // Error
                 return EXIT_FAILURE;
@@ -109,7 +109,7 @@ int main ( int argc, const char *const argv[] )
         // json errors
         {
             failed_to_parse_file_text:
-                log_error("[edy] Failed to parse json text in call to function \"%s\"\n", __FUNCTION__);
+                log_error("[eddy] Failed to parse json text in call to function \"%s\"\n", __FUNCTION__);
 
                 // Error
                 return EXIT_FAILURE;
@@ -118,7 +118,7 @@ int main ( int argc, const char *const argv[] )
         // Standard library
         {
             failed_to_read_file:
-                log_error("[edy] Failed to read file \"%s\" in call to function \"%s\"\n", program_path, __FUNCTION__);
+                log_error("[eddy] Failed to read file \"%s\" in call to function \"%s\"\n", program_path, __FUNCTION__);
 
                 // Error
                 return EXIT_FAILURE;

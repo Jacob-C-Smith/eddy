@@ -1,8 +1,8 @@
 /** !
- * edy main header
+ * eddy main header
  * 
  * @author Jacob Smith
- * @file edy/edy.h
+ * @file eddy/eddy.h
  */
 
 // Include guard
@@ -31,20 +31,20 @@
 #include <base64/base64.h>
 
 // Enumeration definitions
-enum edy_type {
-    EDY_TYPE_INV = 0,
-    EDY_TYPE_I32 = 1,
-    EDY_TYPE_U32 = 2,
-    EDY_TYPE_S32 = 3,
-    EDY_TYPE_I64 = 4,
-    EDY_TYPE_U64 = 5,
-    EDY_TYPE_S64 = 6,
-    EDY_TYPE_F32 = 7,
-    EDY_TYPE_F64 = 8
+enum eddy_type {
+    EDDY_TYPE_INV = 0,
+    EDDY_TYPE_I32 = 1,
+    EDDY_TYPE_U32 = 2,
+    EDDY_TYPE_S32 = 3,
+    EDDY_TYPE_I64 = 4,
+    EDDY_TYPE_U64 = 5,
+    EDDY_TYPE_S64 = 6,
+    EDDY_TYPE_F32 = 7,
+    EDDY_TYPE_F64 = 8
 };
 
 // Constant data
-static const char *const edy_type_strings[9] = 
+static const char *const eddy_type_strings[9] = 
 {
     "invalid",
     "i32",
@@ -58,34 +58,34 @@ static const char *const edy_type_strings[9] =
 };
 
 // Forward declarations
-struct edy_program_s;
+struct eddy_program_s;
 
 // Type definitions
-typedef struct edy_program_s edy_program;
+typedef struct eddy_program_s eddy_program;
 
 // Struct definitions
-struct edy_program_s
+struct eddy_program_s
 {
     char  _name[255];
     char *p_program_text;
     struct {
         char _name[255];
-        enum edy_type _type;
+        enum eddy_type _type;
     } input[4];
     struct {
         char _name[255];
-        enum edy_type _type;
+        enum eddy_type _type;
     } output[4];
 };
 
 /** !
- *  Set up dependencies for edy runtime
+ *  Set up dependencies for eddy runtime
  * 
  * @param void
  * 
  * @return void
  */
-void edy_init ( void );
+void eddy_init ( void );
 
 /** !
  * Return the size of a file IF buffer == 0 ELSE read a file into buffer
