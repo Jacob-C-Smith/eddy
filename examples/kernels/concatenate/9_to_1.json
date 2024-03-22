@@ -1,0 +1,16 @@
+{
+    "name" : "9 > 1",
+    "input" :
+    [
+        { "name" : "A", "type" : "i32" },
+        { "name" : "B", "type" : "i32" },
+        { "name" : "C", "type" : "i32" },
+        { "name" : "D", "type" : "i32" },
+        { "name" : "E", "type" : "i32" },
+        { "name" : "F", "type" : "i32" },
+        { "name" : "G", "type" : "i32" },
+        { "name" : "H", "type" : "i32" },
+        { "name" : "I", "type" : "i32" }
+    ],
+    "output" : [ { "name" : "O", "type" : "i64" } ]
+}

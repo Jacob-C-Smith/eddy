@@ -1,0 +1,36 @@
+{
+    "name" : "mat2 transpose",
+    "input" : [ { "name" : "M", "type" : "i32" } ],
+    "output" : [ { "name" : "O", "type" : "i64" } ],
+    "stages" :
+    [
+        [
+            {
+                "name" : "1 -> 2x2",
+                "input" :
+                [
+                    { "name" : "M", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Mb", "type" : "i32" }
+                ]
+            }
+        ],
+        [
+            {
+                "name" : "2x2 -> 1",
+                "input" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Mb", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "O", "type" : "i64" }
+                ]
+            }
+        ]
+    ]
+}

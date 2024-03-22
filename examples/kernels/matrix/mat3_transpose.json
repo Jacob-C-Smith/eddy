@@ -1,0 +1,11 @@
+{
+    "name" : "mat3 transpose",
+    "input" :
+    [
+        { "name" : "A", "type" : "i32" }
+    ],
+    "output" :
+    [
+        { "name" : "O", "type" : "i64" }
+    ]
+}

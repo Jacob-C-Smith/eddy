@@ -11,7 +11,8 @@
 
 dict *p_eddy_type_lut;
 
-const char *regs[4] = { "rdi", "rsi", "rdx", "rcx" };
+const char *in_regs[8] = { "rdi", "rsi", "rdx", "rcx", "r8", "r9", "r10", "r11" };
+const char *out_regs[4] = { "r12", "r13", "r14", "r15" };
 
 void init_type_lut (void)
 {
@@ -248,7 +249,7 @@ int program_load_as_json_value ( eddy_program **const pp_eddy_program, const jso
                 strncpy(buf, old_p, l);
                 buf[l] = '\0';
 
-                for (size_t k = 0; k < 4; k++)
+                for (size_t k = 0; k < 8; k++)
                 {
                     if ( strcmp(buf, &p_eddy_program->input[k]._name) == 0 ) 
                     {
@@ -438,7 +439,7 @@ void program_info ( const eddy_program *const p_eddy_program )
     log_info("input: \n", p_eddy_program->_name);
 
     // Log the inputs
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 0; i < 8; i++)
         if ( p_eddy_program->input[i]._type != EDDY_TYPE_INV )
             log_info("\t[%d] %s: %s\n", i, p_eddy_program->input[i]._name, eddy_type_strings[p_eddy_program->input[i]._type]);
     
@@ -518,36 +519,28 @@ void program_info ( const eddy_program *const p_eddy_program )
         switch (p_eddy_program->operations[i].type)
         {
         case EDDY_OP_POP:
-            printf("vmovaps zword [%s], zmm%d\n", regs[p_eddy_program->operations[i].pop.to,  stack_pointer]);
             stack_pointer--;
+            printf("vmovaps zword [%s], zmm%d\n", out_regs[p_eddy_program->operations[i].pop.to], stack_pointer);
             break;
         case EDDY_OP_PUSH:
-            printf("vmovaps zmm%d, zword[%s]\n", stack_pointer, regs[p_eddy_program->operations[i].pop.to]);
+            printf("vmovaps zmm%d, zword[%s]\n", stack_pointer, in_regs[p_eddy_program->operations[i].push.from]);
             stack_pointer++;
             break;
         case EDDY_OP_ADD:
             stack_pointer--;
-            stack_pointer--;
-            printf("vaddps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
-            stack_pointer++;
+            printf("vaddps zmm%d, zmm%d, zmm%d\n", stack_pointer - 1, stack_pointer - 1, stack_pointer);
             break;
         case EDDY_OP_SUB:
             stack_pointer--;
-            stack_pointer--;
-            printf("vsubps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
-            stack_pointer++;
+            printf("vsubps zmm%d, zmm%d, zmm%d\n", stack_pointer - 1, stack_pointer - 1, stack_pointer);
             break;
         case EDDY_OP_MUL:
             stack_pointer--;
-            stack_pointer--;
-            printf("vmulps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
-            stack_pointer++;
+            printf("vmulps zmm%d, zmm%d, zmm%d\n", stack_pointer - 1, stack_pointer - 1, stack_pointer);
             break;
         case EDDY_OP_DIV:
             stack_pointer--;
-            stack_pointer--;
-            printf("vdivps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
-            stack_pointer++;
+            printf("vdivps zmm%d, zmm%d, zmm%d\n", stack_pointer - 1, stack_pointer - 1, stack_pointer);
             break;
         default:
             break;

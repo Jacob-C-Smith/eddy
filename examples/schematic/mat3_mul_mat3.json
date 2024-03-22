@@ -1,0 +1,170 @@
+{
+    "name" : "mat2 mul mat2",
+    "input" : [
+        { "name" : "M", "type" : "i32" },
+        { "name" : "N", "type" : "i32" }
+    ],
+    "output" : [ { "name" : "O", "type" : "i64" } ],
+    "stages" :
+    [
+        [
+            {
+                "name" : "1 -> 3x3",
+                "input" :
+                [
+                    { "name" : "M", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Mb", "type" : "i32" },
+                    { "name" : "Mc", "type" : "i32" }
+                ]
+            },
+            {
+                "name" : "1 -> 3x3",
+                "input" :
+                [
+                    { "name" : "N", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Na", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" },
+                    { "name" : "Nc", "type" : "i32" }
+                ]
+            }
+        ],
+        [
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Na", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Nc", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Mb", "type" : "i32" },
+                    { "name" : "Na", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Mb", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Mb", "type" : "i32" },
+                    { "name" : "Nc", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Mc", "type" : "i32" },
+                    { "name" : "Na", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Mc", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec3 dot",
+                "input" :
+                [
+                    { "name" : "Mc", "type" : "i32" },
+                    { "name" : "Nc", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            }
+        ],
+        [
+            {
+                "name" : "9 -> 1",
+                "input" :
+                [
+                    { "name" : "Oa", "type" : "i32" },
+                    { "name" : "Ob", "type" : "i32" },
+                    { "name" : "Oc", "type" : "i32" },
+                    { "name" : "Od", "type" : "i32" },
+                    { "name" : "Oe", "type" : "i32" },
+                    { "name" : "Of", "type" : "i32" },
+                    { "name" : "Og", "type" : "i32" },
+                    { "name" : "Oh", "type" : "i32" },
+                    { "name" : "Oi", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "O", "type" : "i64" }
+                ]
+            }
+        ]
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "name" : "1 > 2x2 (col, row)",
+    "input" :
+    [
+        { "name" : "I", "type" : "i32" }
+    ],
+    "output" :
+    [
+        { "name" : "A", "type" : "i32" },
+        { "name" : "B", "type" : "i32" }
+    ]
+}

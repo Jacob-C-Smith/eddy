@@ -1,0 +1,21 @@
+{
+    "name" : "vec4 + vec4",
+    "input" :
+    [
+        { "name" : "A", "type" : "i32" },
+        { "name" : "B", "type" : "i32" },
+        { "name" : "C", "type" : "i32" },
+        { "name" : "D", "type" : "i32" },
+        { "name" : "E", "type" : "i32" },
+        { "name" : "F", "type" : "i32" },
+        { "name" : "G", "type" : "i32" },
+        { "name" : "H", "type" : "i32" }
+    ],
+    "output" :
+    [
+        { "name" : "I", "type" : "i64" },
+        { "name" : "J", "type" : "i64" },
+        { "name" : "K", "type" : "i64" },
+        { "name" : "L", "type" : "i64" }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "name" : "4 > 1",
+    "input" :
+    [
+        { "name" : "A", "type" : "i32" },
+        { "name" : "B", "type" : "i32" },
+        { "name" : "C", "type" : "i32" },
+        { "name" : "D", "type" : "i32" }
+    ],
+    "output" :
+    [
+        { "name" : "O", "type" : "i64" }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "name" : "mat2 mul mat2",
+    "input" :
+    [
+        { "name" : "M", "type" : "i32" },
+        { "name" : "N", "type" : "i32" }
+    ],
+    "output" : [ { "name" : "O", "type" : "i64" } ],
+    "stages" :
+    [
+        [
+            {
+                "name" : "1 -> 2x2",
+                "input" :
+                [
+                    { "name" : "M", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Mb", "type" : "i32" }
+                ]
+            },
+            {
+                "name" : "1 -> 2x2",
+                "input" :
+                [
+                    { "name" : "N", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Na", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" }
+                ]
+            }
+        ],
+        [
+            {
+                "name" : "vec2 dot",
+                "input" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Na", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oa", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec2 dot",
+                "input" :
+                [
+                    { "name" : "Ma", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Ob", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec2 dot",
+                "input" :
+                [
+                    { "name" : "Mb", "type" : "i32" },
+                    { "name" : "Na", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Oc", "type" : "i64" }
+                ]
+            },
+            {
+                "name" : "vec2 dot",
+                "input" :
+                [
+                    { "name" : "Mb", "type" : "i32" },
+                    { "name" : "Nb", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "Od", "type" : "i64" }
+                ]
+            }
+        ],
+        [
+            {
+                "name" : "4 -> 1",
+                "input" :
+                [
+                    { "name" : "Oa", "type" : "i32" },
+                    { "name" : "Ob", "type" : "i32" },
+                    { "name" : "Oc", "type" : "i32" },
+                    { "name" : "Od", "type" : "i32" }
+                ],
+                "output" :
+                [
+                    { "name" : "O", "type" : "i64" }
+                ]
+            }
+        ]
+    ]
+}
