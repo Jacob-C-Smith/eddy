@@ -37,7 +37,7 @@
  * 
  * @return 1 on success, 0 on error
  */
-int program_create ( eddy_program **const pp_eddy_program );
+DLLEXPORT int program_create ( eddy_program **const pp_eddy_program );
 
 /** !
  *  Construct an eddy program from a json value
@@ -47,7 +47,7 @@ int program_create ( eddy_program **const pp_eddy_program );
  * 
  * @return 1 on success, 0 on error
  */
-int load_program_as_json_value ( eddy_program **const pp_eddy_program, const json_value *const p_value );
+DLLEXPORT int program_load_as_json_value ( eddy_program **const pp_eddy_program, const json_value *const p_value );
 
 /** !
  *  Write information about an eddy program to standard out
@@ -56,7 +56,7 @@ int load_program_as_json_value ( eddy_program **const pp_eddy_program, const jso
  * 
  * @return void
  */
-void program_info ( const eddy_program *const p_eddy_program );
+DLLEXPORT void program_info ( const eddy_program *const p_eddy_program );
 
 /** !
  *  Destory an eddy program and its contents
@@ -65,4 +65,4 @@ void program_info ( const eddy_program *const p_eddy_program );
  * 
  * @return 1 on success, 0 on error
  */
-int program_destroy ( eddy_program **const pp_eddy_program );
+DLLEXPORT int program_destroy ( eddy_program **const pp_eddy_program );

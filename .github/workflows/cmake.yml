@@ -36,5 +36,6 @@ jobs:
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: |
-        cp ${{github.workspace}}/example_program.json ${{github.workspace}}/build/example_program.json
+        chmod +x ${{github.workspace}}/build_program_json.sh
+        bash ${{github.workspace}}/build_program_json.sh ${{github.workspace}}/product_of_sums.eds > ${{github.workspace}}/build/example.json
         ${{github.workspace}}/build/eddy_example

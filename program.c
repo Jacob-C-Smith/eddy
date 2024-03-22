@@ -2,6 +2,7 @@
  *  Defines functions for working with eddy programs
  * 
  * @file program.c
+ * 
  * @author Jacob Smith
 */
 
@@ -10,6 +11,8 @@
 
 dict *p_eddy_type_lut;
 
+const char *regs[4] = { "rdi", "rsi", "rdx", "rcx" };
+
 void init_type_lut (void)
 {
 
@@ -17,7 +20,7 @@ void init_type_lut (void)
     dict_construct(&p_eddy_type_lut, 32, 0);
 
     // Populate the type LUT
-    for (size_t i = 0; i < 9; i++) dict_add(p_eddy_type_lut, eddy_type_strings[i], i);
+    for (size_t i = 0; i < 9; i++) dict_add(p_eddy_type_lut, eddy_type_strings[i], (void *) i);
 
     // Done
     return;
@@ -71,7 +74,7 @@ int program_create ( eddy_program **const pp_eddy_program )
     }
 }
 
-int load_program_as_json_value ( eddy_program **const pp_eddy_program, const json_value *const p_value )
+int program_load_as_json_value ( eddy_program **const pp_eddy_program, const json_value *const p_value )
 {
 
     // Argument check
@@ -109,10 +112,13 @@ int load_program_as_json_value ( eddy_program **const pp_eddy_program, const jso
         size_t len = strlen(p_source->string);
 
         // Allocate memory for the program text
-        p_eddy_program->p_program_text = calloc(len + 1, sizeof(char));
+        p_eddy_program->p_program_text = calloc(len + 1, 2);
+
+        // Copy the program text
+        //strncpy(p_eddy_program->p_program_text, p_source->string, len);
 
         // Decode the program text
-        base64_decode(p_source->string, len, p_eddy_program->p_program_text);
+        base64_decode(p_source->string, len*2, p_eddy_program->p_program_text);
     }
 
     // Parse the input
@@ -207,6 +213,130 @@ int load_program_as_json_value ( eddy_program **const pp_eddy_program, const jso
                 p_eddy_program->output[i]._type = (enum eddy_type) dict_get(p_eddy_type_lut, p_type->string);
             }
         }
+    }
+
+    // Construct a stack
+    stack_construct(&p_eddy_program->p_stack, 32);
+
+    // Parse the source code
+    {
+
+        // Initialized data
+        size_t i = 0,
+               j = 0;
+        char   buf[64];
+        char *p_text = p_eddy_program->p_program_text;
+
+        // Walk the file
+        while ( *p_text )
+        {
+            // Skip newlines and whitespaces
+            if ( *p_text == ' ' || *p_text == '\n' || *p_text == '\t' || *p_text == '\r' ) { p_text++; continue; };
+
+            switch (*p_text)
+            {
+            case '<':
+            {
+                p_eddy_program->operations[j].type = EDDY_OP_PUSH;
+                p_text++;
+                p_text++;
+                
+                char *old_p = p_text;
+                size_t l = 0;
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+                l = (p_text - old_p);
+                strncpy(buf, old_p, l);
+                buf[l] = '\0';
+
+                for (size_t k = 0; k < 4; k++)
+                {
+                    if ( strcmp(buf, &p_eddy_program->input[k]._name) == 0 ) 
+                    {
+                        p_eddy_program->operations[j].push.from = k;
+                        break;
+                    }
+                }
+                
+                j++;
+
+                if ( *p_text== '\0')
+                    continue;
+
+
+                break;
+                }
+
+            case '>':
+            {
+                p_eddy_program->operations[j].type = EDDY_OP_POP;
+                
+                p_text++;
+                p_text++;
+                char *old_p = p_text;
+                size_t l = 0;
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+                l = (p_text - old_p);
+                strncpy(buf, old_p, l);
+                buf[l] = '\0';
+
+                for (size_t k = 0; k < 4; k++)
+                {
+                    if ( strcmp(buf, p_eddy_program->output[k]._name) == 0 ) 
+                    {
+                        p_eddy_program->operations[j].pop.to = k;
+                        break;
+                    }
+                }
+                
+                j++;
+
+                if ( *p_text== '\0')
+                    continue;
+
+
+                break;
+            }
+
+            case '+':
+                p_eddy_program->operations[j].type = EDDY_OP_ADD;
+
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+                j++;
+
+                continue;
+
+            case '-':
+                p_eddy_program->operations[j].type = EDDY_OP_SUB;
+
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+                j++;
+
+                continue;
+
+            case '*':
+                p_eddy_program->operations[j].type = EDDY_OP_MUL;
+
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+                j++;
+
+                continue;
+
+            case '/':
+                p_eddy_program->operations[j].type = EDDY_OP_DIV;
+
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+                j++;
+
+                continue;
+
+            default:
+                while(*p_text!='\n' && *p_text!='\0') { p_text++; };
+
+                continue;
+            }
+        }
+        
+        p_text++;
     }
 
     // Return a pointer to the caller
@@ -319,9 +449,112 @@ void program_info ( const eddy_program *const p_eddy_program )
         if ( p_eddy_program->output[i]._type != EDDY_TYPE_INV )
             log_info("\t[%d] %s: %s\n", i, p_eddy_program->output[i]._name, eddy_type_strings[p_eddy_program->output[i]._type]);
     
+    putchar('\n');
+    log_info("source code\n------------------------------\n");
+
+    printf("%s\n\n", p_eddy_program->p_program_text);
+
     // Log the source code
-    log_info("source:\n------------------------------\n%s\n------------------------------\n", p_eddy_program->p_program_text);
+    log_info("stack pointer | IR\n------------------------------\n");
     
+    size_t stack_pointer = 0;
+
+    for (size_t i = 0; p_eddy_program->operations[i].type != EDDY_OP_INVALID; i++)
+    {
+        
+        switch (p_eddy_program->operations[i].type)
+        {
+        case EDDY_OP_POP:
+            printf("%-13d | POP %d\n", stack_pointer, p_eddy_program->operations[i].pop.to);
+            stack_pointer--;
+            break;
+        case EDDY_OP_PUSH:
+            printf("%-13d | PUSH %d\n", stack_pointer, p_eddy_program->operations[i].push.from);
+            stack_pointer++;
+            break;
+        case EDDY_OP_ADD:
+            stack_pointer--;
+            stack_pointer--;
+            printf("%-13d | ADD\n", stack_pointer);
+            stack_pointer++;
+            break;
+        case EDDY_OP_SUB:
+            stack_pointer--;
+            stack_pointer--;
+            printf("%-13d | SUB\n", stack_pointer);
+            stack_pointer++;
+            break;
+        case EDDY_OP_MUL:
+            stack_pointer--;
+            stack_pointer--;
+            printf("%-13d | MUL\n", stack_pointer);
+            stack_pointer++;
+            break;
+        case EDDY_OP_DIV:
+            stack_pointer--;
+            stack_pointer--;
+            printf("%-13d | DIV\n", stack_pointer);
+            stack_pointer++;
+            break;
+        default:
+            printf("%-13d | \n", stack_pointer);
+            break;
+        }
+    }
+    
+    putchar('\n');
+
+    stack_pointer = 0;
+
+    log_info("asm:\n------------------------------\n");
+
+    printf("\n");
+
+    printf("[BITS 64]\n");
+    printf("main:\n");
+    for (size_t i = 0; p_eddy_program->operations[i].type != EDDY_OP_INVALID; i++)
+    {
+        
+        switch (p_eddy_program->operations[i].type)
+        {
+        case EDDY_OP_POP:
+            printf("vmovaps zword [%s], zmm%d\n", regs[p_eddy_program->operations[i].pop.to,  stack_pointer]);
+            stack_pointer--;
+            break;
+        case EDDY_OP_PUSH:
+            printf("vmovaps zmm%d, zword[%s]\n", stack_pointer, regs[p_eddy_program->operations[i].pop.to]);
+            stack_pointer++;
+            break;
+        case EDDY_OP_ADD:
+            stack_pointer--;
+            stack_pointer--;
+            printf("vaddps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
+            stack_pointer++;
+            break;
+        case EDDY_OP_SUB:
+            stack_pointer--;
+            stack_pointer--;
+            printf("vsubps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
+            stack_pointer++;
+            break;
+        case EDDY_OP_MUL:
+            stack_pointer--;
+            stack_pointer--;
+            printf("vmulps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
+            stack_pointer++;
+            break;
+        case EDDY_OP_DIV:
+            stack_pointer--;
+            stack_pointer--;
+            printf("vdivps zmm%d, zmm%d, zmm%d\n", stack_pointer, stack_pointer + 1, stack_pointer);
+            stack_pointer++;
+            break;
+        default:
+            break;
+        }
+    }
+    
+
     no_eddy_program:
 
     // Done

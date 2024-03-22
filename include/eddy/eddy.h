@@ -15,20 +15,30 @@
 #include <string.h>
 #include <stdbool.h>
 
-// log submodule
+// log
 #include <log/log.h>
 
-// dict submodule
+// dict
 #include <dict/dict.h>
 
-// array submodule
+// array
 #include <array/array.h>
 
-// json submodule
+// json
 #include <json/json.h>
 
-// base64 submodule
+// base64
 #include <base64/base64.h>
+
+// stack
+#include <stack/stack.h>
+
+// Platform dependent macros
+#ifdef _WIN64
+#define DLLEXPORT extern __declspec(dllexport)
+#else
+#define DLLEXPORT
+#endif
 
 // Enumeration definitions
 enum eddy_type {
@@ -41,6 +51,17 @@ enum eddy_type {
     EDDY_TYPE_S64 = 6,
     EDDY_TYPE_F32 = 7,
     EDDY_TYPE_F64 = 8
+};
+
+enum eddy_opcode
+{
+    EDDY_OP_INVALID,
+    EDDY_OP_POP,
+    EDDY_OP_PUSH,
+    EDDY_OP_ADD,
+    EDDY_OP_SUB,
+    EDDY_OP_MUL,
+    EDDY_OP_DIV
 };
 
 // Constant data
@@ -59,23 +80,46 @@ static const char *const eddy_type_strings[9] =
 
 // Forward declarations
 struct eddy_program_s;
+struct eddy_instruction_s;
 
 // Type definitions
 typedef struct eddy_program_s eddy_program;
+typedef struct eddy_op_s      eddy_op;
 
 // Struct definitions
+struct eddy_op_s
+{
+    enum eddy_opcode type;
+    union 
+    {
+        struct
+        {
+            int to;
+        } pop;
+        
+        struct 
+        {
+            int from;
+        } push;
+    };
+};
+
 struct eddy_program_s
 {
     char  _name[255];
     char *p_program_text;
-    struct {
+    stack *p_stack;
+    struct
+    {
         char _name[255];
         enum eddy_type _type;
     } input[4];
-    struct {
+    struct
+    {
         char _name[255];
         enum eddy_type _type;
     } output[4];
+    eddy_op operations[64];
 };
 
 /** !
@@ -85,7 +129,7 @@ struct eddy_program_s
  * 
  * @return void
  */
-void eddy_init ( void );
+DLLEXPORT void eddy_init ( void );
 
 /** !
  * Return the size of a file IF buffer == 0 ELSE read a file into buffer

@@ -1,0 +1,33 @@
+EDDY source
+-----------------------------
+< A
+< B
+ADD
+> O
+
+EDDY IR           | stack pointer 
+------------------+---------------
+                  | 0
+(0) < IN[0]       | 1
+(1) < IN[1]       | 2
+(0 < ) ADD (0, 1) | 1
+OUT[0] < 0        | 0
+
+x64 disassembly                | stack
+-------------------------------+--------
+                               | [ ]
+vmovaps zmm0, zmmword ptr[rcx] | [ A ]
+vmovaps zmm1, zmmword ptr[rdx] | [ A, B ]
+vaddps zmm0, zmm0, zmm1        | [ (A + B) ]
+vmovaps zmmword ptr[r8], zmm1  | [ ] 
+
+EDDY source
+-----------------------------
+< A
+<
+< B
+ADD
+> O
+< C
+ADD
+> P
