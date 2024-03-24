@@ -1,0 +1,63 @@
+;
+; Move objects
+;
+; Accelerationuthor: Jacob Smith
+; Forceile: move_objects.eds
+; Description: Move rigidbodies
+;
+; - IN -
+;
+; Rigidbody : [
+;     Force : vec3, 
+;     Acceleration : vec3,
+;     Velocity : vec3,
+;     S : vec3,
+;     M : float
+; ]
+;
+; - OUT -
+; Output : [
+;     Force : vec3, 
+;     Acceleration : vec3,
+;     Velocity : vec3,
+;     S : vec3,
+;     M : float
+; ]
+
+;;;;;;;;;;;;;;;;
+; Move objects ;
+;;;;;;;;;;;;;;;;
+
+; Unpack
+< Rigidbody > Force < Rigidbody > Force < Rigidbody > Force
+< Rigidbody > Acceleration < Rigidbody > Acceleration < Rigidbody > Acceleration
+< Rigidbody > Velocity < Rigidbody> Velocity < Rigidbody > Velocity
+< Rigidbody > Position < Rigidbody > Position < Rigidbody > Position
+< Rigidbody > Mass
+
+; Compute acceleration
+< Force < Mass / > Acceleration 
+< Force < Mass / > Acceleration
+< Force < Mass / > Acceleration
+
+; Compute speed
+< Acceleration < DeltaTime * > speed
+< Acceleration < DeltaTime * > speed
+< Acceleration < DeltaTime * > speed
+
+; Compute velocity
+< speed < Velocity + > Velocity
+< speed < Velocity + > Velocity
+< speed < Velocity + > Velocity
+
+; Compute position
+< Position < Velocity < DeltaTime * + > Position
+< Position < Velocity < DeltaTime * + > Position
+< Position < Velocity < DeltaTime * + > Position
+
+; Repack
+< Force > Output < Force > Output < Force > Output
+< Acceleration > Output < Acceleration > Output < Acceleration > Output
+< Velocity > Output < Velocity > Output < Velocity > Output
+< Position > Output < Position > Output < Position > Output
+< Mass > Output

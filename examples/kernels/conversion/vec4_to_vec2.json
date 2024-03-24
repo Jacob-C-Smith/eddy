@@ -1,0 +1,11 @@
+{
+    "name" : "I[A, B, C, D] > O[A, B]",
+    "input" :
+    [
+        { "name" : "I", "type" : "i32" }
+    ],
+    "output" :
+    [
+        { "name" : "O", "type" : "i64" }
+    ]
+}

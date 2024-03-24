@@ -1,13 +1,1 @@
-{
-	"name" : "Product of sums",
-	"source" : """,
-	"input" :	[
-		{ "name" : "A", "type" : "i32" },
-		{ "name" : "B", "type" : "i32" },
-		{ "name" : "C", "type" : "i32" },
-		{ "name" : "D", "type" : "i32" }
-	]
-,	"output" :	[
-		{ "name" : "O", "type" : "i64" }
-	]
-}
+{"name" : "Product of sums","source" : "PCBBCjwgQgorCjwgQwo8IEQKKwoqCjwgQwo8IEQKKwo8IEMKPCBECisKKgovCj4gTwo=","input" :[{ "name" : "A", "type" : "i32" },{ "name" : "B", "type" : "i32" },{ "name" : "C", "type" : "i32" },{ "name" : "D", "type" : "i32" }],"output" :[{ "name" : "O", "type" : "i64" }]}

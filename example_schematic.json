@@ -1,0 +1,38 @@
+{
+    "in" : [ "A", "B" ],
+    "out" : [ "O", "P" ],
+    "nodes" : 
+    {
+        "program" : 
+        {
+            "source" : "PD0gQUREKEEsIEIpCk8gPD0gXyAgIAo=",
+            "input"  :
+            [
+                { "name" : "A", "type" : "i32" },
+                { "name" : "B", "type" : "i32" }
+            ],
+            "output" : 
+            [
+                { "name" : "Q", "type" : "i32" }
+            ]
+        },
+        "contingency" :
+        {
+            "if" : "Q & 1",
+            "input"  :
+            [
+                { "name" : "Q", "type" : "i32" }
+            ],
+            "output" : 
+            [
+                { "name" : "O", "type" : "i64" },
+                { "name" : "P", "type" : "i64" }
+            ]
+        },
+        "A" : { "file" : "A.edb" },
+        "B" : { "file" : "B.edb" },
+        "O" : { "file" : "O.edb" },
+        "P" : { "file" : "P.edb" },
+        "Q" : { "file" : "Q.edb" }
+    }
+}
