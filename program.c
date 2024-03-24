@@ -475,27 +475,19 @@ void program_info ( const eddy_program *const p_eddy_program )
             break;
         case EDDY_OP_ADD:
             stack_pointer--;
-            stack_pointer--;
             printf("%-13d | ADD\n", stack_pointer);
-            stack_pointer++;
             break;
         case EDDY_OP_SUB:
             stack_pointer--;
-            stack_pointer--;
             printf("%-13d | SUB\n", stack_pointer);
-            stack_pointer++;
             break;
         case EDDY_OP_MUL:
             stack_pointer--;
-            stack_pointer--;
             printf("%-13d | MUL\n", stack_pointer);
-            stack_pointer++;
             break;
         case EDDY_OP_DIV:
             stack_pointer--;
-            stack_pointer--;
             printf("%-13d | DIV\n", stack_pointer);
-            stack_pointer++;
             break;
         default:
             printf("%-13d | \n", stack_pointer);

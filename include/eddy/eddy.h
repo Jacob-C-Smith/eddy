@@ -113,13 +113,13 @@ struct eddy_program_s
     {
         char _name[255];
         enum eddy_type _type;
-    } input[4];
+    } input[8];
     struct
     {
         char _name[255];
         enum eddy_type _type;
     } output[4];
-    eddy_op operations[64];
+    eddy_op operations[256];
 };
 
 /** !
