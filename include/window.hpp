@@ -18,6 +18,7 @@ class Window
 
         virtual void DrawChar(char,int,int) = 0;
         virtual void DrawRect(int,int,int,int) = 0;
+        virtual void FillRect(int,int,int,int) = 0;
         virtual int CharWidth(char) = 0;
         virtual int CharHeight(char) = 0;
 

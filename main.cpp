@@ -14,6 +14,8 @@
 #include <column.hpp>
 #include <glyph.hpp>
 #include <character.hpp>
+#include <border.hpp>
+#include <scroller.hpp>
 
 int main ( int argc, const char *argv[] )
 {
@@ -28,16 +30,13 @@ int main ( int argc, const char *argv[] )
         new Column(),
             new Row(),
                 new Character('a'),
-                new Rectangle(Rect(0,0,10,20)),
+                new Rectangle(Rect(0,0,100,200)),
                 new Column(),
                     new Character('X'),
                     new Character('Y'),
                     new Character('Z'),
                 new Character('b'),
-            new Row(),
-                new Character('x'),
-                new Rectangle(Rect(0,0,20,10)),
-                new Character('y')
+            new Row("woh-woh-wee-woh"),
     };
 
     _g[4]->Insert(_g[5], 0);
@@ -48,15 +47,14 @@ int main ( int argc, const char *argv[] )
     _g[1]->Insert(_g[3], 1);
     _g[1]->Insert(_g[4], 2);
     _g[1]->Insert(_g[8], 3);
-    
-    _g[9]->Insert(_g[10], 0);
-    _g[9]->Insert(_g[11], 1);
-    _g[9]->Insert(_g[12], 2);
 
     _g[0]->Insert(_g[1], 0);
     _g[0]->Insert(_g[9], 0);
 
-    w->SetContents(_g[0]);
+    Glyph *h = new Border(new Scroller(new Border(_g[0],1), 32), 1);
+    Glyph *root = new Column();
+    root->Insert(h, 0);
+    w->SetContents(root);
 
     w->Redraw();
     

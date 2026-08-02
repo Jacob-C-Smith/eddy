@@ -15,6 +15,11 @@ void Composition::Insert(Glyph *g, int i)
     _compositor->Compose();
 }
 
+Glyph *Composition::Child ( int i )
+{
+    return _contents.Get(i);
+}
+
 void Composition::Draw(Window *w)
 {
     

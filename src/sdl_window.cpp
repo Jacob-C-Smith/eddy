@@ -10,11 +10,11 @@ SDLWindow::SDLWindow (std::string title)
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_CreateWindowAndRenderer(title.c_str(), 800, 600, 0, &this->w, &this->r);
+    SDL_CreateWindowAndRenderer(title.c_str(), 800, 600, SDL_WINDOW_HIGH_PIXEL_DENSITY, &this->w, &this->r);
 
     TTF_Init();
     
-    f = TTF_OpenFont("/System/Library/Fonts/Supplemental/Arial.ttf", 12.0f);
+    f = TTF_OpenFont("/System/Library/Fonts/Supplemental/Arial.ttf", 120.0f);
 }
 
 void SDLWindow::Redraw() 
@@ -67,7 +67,16 @@ void SDLWindow::DrawRect(int x,int y,int w,int h)
     SDL_FRect r{(float)x,(float)y,(float)w,(float)h};
     
     SDL_RenderRect(this->r, &r);
+    
+    return;
+}
 
+void SDLWindow::FillRect(int x,int y,int w,int h)
+{
+    SDL_FRect r{(float)x,(float)y,(float)w,(float)h};
+    
+    SDL_RenderFillRect(this->r, &r);
+    
     return;
 }
 

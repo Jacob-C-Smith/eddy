@@ -20,6 +20,7 @@ class SDLWindow : public Window
         
         void DrawChar(char,int,int);
         void DrawRect(int,int,int,int);
+        void FillRect(int,int,int,int);
         int CharWidth(char);
         int CharHeight(char);
 

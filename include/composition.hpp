@@ -12,20 +12,21 @@ class Composition : public Glyph
 {
     public:
         Composition() { _compositor = new SimpleCompositor(); _compositor->SetComposition(this); };
-        void              Draw           ( Window * )              override;
-        void              SetWindow      ( Window *window )        override;
-        void              Insert         ( Glyph *, int )          override;
-        Composition      *GetComposition ( )                       override;
-        void              Compose        ( )                       override;
-        void              Position       ( Point c )               override;
-        Point             Position       ( )                       override;
-        Point             Adjust         ( Glyph *child, Point c ) override;
-        void              Adjust         ( Point c )               override;
-        Point             Cursor         ( )                       override;
-        void              Size           ( Window *window )        override;
-        Rect              Bounds         ( )                       override;
-        Iterator<Glyph*> *CreateIterator ( )                       override; 
-    private:
+        virtual void              Draw           ( Window * )              override;
+        virtual void              SetWindow      ( Window *window )        override;
+        virtual void              Insert         ( Glyph *, int )          override;
+        virtual Glyph            *Child          ( int )                   override;
+        virtual Composition      *GetComposition ( )                       override;
+        virtual void              Compose        ( )                       override;
+        virtual void              Position       ( Point c )               override;
+        virtual Point             Position       ( )                       override;
+        virtual Point             Adjust         ( Glyph *child, Point c ) override;
+        virtual void              Adjust         ( Point c )               override;
+        virtual Point             Cursor         ( )                       override;
+        virtual void              Size           ( Window *window )        override;
+        virtual Rect              Bounds         ( )                       override;
+        virtual Iterator<Glyph*> *CreateIterator ( )                       override; 
+    protected:
         List<Glyph *>  _contents{};
         Rect           _size     = { 0,0,0,0 };
         Point          _position = { 0,0 };
