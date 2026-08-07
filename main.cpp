@@ -16,6 +16,8 @@
 #include <character.hpp>
 #include <border.hpp>
 #include <scroller.hpp>
+#include <gui_factory.hpp>
+#include <button.hpp>
 
 int main ( int argc, const char *argv[] )
 {
@@ -23,35 +25,36 @@ int main ( int argc, const char *argv[] )
     (void)argv;
 
     Window *w = new SDLWindow("eddy");
-    // Window *w = new NullWindow("eddy");
+    GUIFactory *f = GUIFactory::Instance();
 
     Glyph *_g[] = 
     {
-        new Column(),
-            new Row(),
-                new Character('a'),
-                new Rectangle(Rect(0,0,100,200)),
-                new Column(),
-                    new Character('X'),
-                    new Character('Y'),
-                    new Character('Z'),
-                new Character('b'),
-            new Row("woh-woh-wee-woh"),
+        new Row(),
+            new Column(),
+                new Row("composite"),
+                new Row("strategy"),
+            new Column(),
+                new Row("decorator"),
+                new Row("glyph"),
+                
     };
 
-    _g[4]->Insert(_g[5], 0);
-    _g[4]->Insert(_g[6], 1);
-    _g[4]->Insert(_g[7], 2);
+    Glyph *_b = f->CreateButton();
+    Glyph *_l = f->CreateLabel();
+
+    _b->Insert(_g[6], 0);
+    _l->Insert(_g[5], 0);
 
     _g[1]->Insert(_g[2], 0);
     _g[1]->Insert(_g[3], 1);
-    _g[1]->Insert(_g[4], 2);
-    _g[1]->Insert(_g[8], 3);
 
-    _g[0]->Insert(_g[1], 0);
-    _g[0]->Insert(_g[9], 0);
+    _g[4]->Insert(_l, 0);
+    _g[4]->Insert(_b, 1);
 
-    Glyph *h = new Border(new Scroller(new Border(_g[0],1), 32), 1);
+    _g[0]->Insert(new Scroller(new Border(_g[1],1),32), 0);
+    _g[0]->Insert(new Border(_g[4],1), 1);
+
+    Glyph *h = _g[0];
     Glyph *root = new Column();
     root->Insert(h, 0);
     w->SetContents(root);

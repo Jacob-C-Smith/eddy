@@ -21,6 +21,8 @@ class SDLWindow : public Window
         void DrawChar(char,int,int);
         void DrawRect(int,int,int,int);
         void FillRect(int,int,int,int);
+        void DrawButton(int,int,int,int,std::string);
+        void DrawLabel(int,int,int,int,std::string);
         int CharWidth(char);
         int CharHeight(char);
 

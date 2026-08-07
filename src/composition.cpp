@@ -83,7 +83,7 @@ void Composition::Adjust ( Point c )
 
 Point Composition::Cursor ( ) { return _position; };
 
-void Composition::Size ( Window *window ) 
+void Composition::Size ( Window * ) 
 { 
     Glyph::Bounds
     (

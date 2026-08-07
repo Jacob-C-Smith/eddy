@@ -9,7 +9,7 @@ class ListIterator : public Iterator<Item>
     public:
         ListIterator(const List<Item>* aList) : _aList(aList) {};
         
-        virtual void First() { index = 0; _current = _aList->Get(index); };
+        virtual void First() { index = 0; if( IsDone() ) return; _current = _aList->Get(index); };
         virtual void Next() { index++; if( IsDone() ) return; _current = _aList->Get(index); };
         virtual bool IsDone() const { return _aList->Count() == index; };
         virtual Item CurrentItem() const { return _current; };

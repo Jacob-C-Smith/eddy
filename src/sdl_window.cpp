@@ -80,6 +80,44 @@ void SDLWindow::FillRect(int x,int y,int w,int h)
     return;
 }
 
+void SDLWindow::DrawLabel(int x,int y,int w,int h,std::string c)
+{
+    SDL_FRect r{(float)x,(float)y,(float)w,(float)h};
+    SDL_Color lc{};
+    
+    SDL_GetRenderDrawColor(this->r,&lc.r,&lc.g,&lc.b,&lc.a);
+
+    if ( "red" == c )
+        SDL_SetRenderDrawColor(this->r,255,0,0,255);
+    else if ( "green" == c )
+        SDL_SetRenderDrawColor(this->r,0,255,0,255);
+    else
+        SDL_SetRenderDrawColor(this->r,0,0,255,255);
+
+    SDL_RenderRect(this->r, &r);
+    
+    SDL_SetRenderDrawColor(this->r,lc.r,lc.g,lc.b,lc.a);
+}
+
+void SDLWindow::DrawButton(int x,int y,int w,int h,std::string c)
+{
+    SDL_FRect r{(float)x,(float)y,(float)w,(float)h};
+    SDL_Color lc{};
+    
+    SDL_GetRenderDrawColor(this->r,&lc.r,&lc.g,&lc.b,&lc.a);
+
+    if ( "red" == c )
+        SDL_SetRenderDrawColor(this->r,255,0,0,255);
+    else if ( "green" == c )
+        SDL_SetRenderDrawColor(this->r,0,255,0,255);
+    else
+        SDL_SetRenderDrawColor(this->r,0,0,255,255);
+
+    SDL_RenderFillRect(this->r, &r);
+    
+    SDL_SetRenderDrawColor(this->r,lc.r,lc.g,lc.b,lc.a);
+}
+
 int SDLWindow::CharWidth(char c)
 {
     int width, height;
