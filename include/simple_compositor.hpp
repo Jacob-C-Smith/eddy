@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include <compositor.hpp>
 
 class SimpleCompositor : public Compositor 

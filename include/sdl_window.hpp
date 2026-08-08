@@ -1,4 +1,5 @@
 #pragma once
+#include <window_imp.hpp>
 #include <window.hpp>
 
 #include <SDL3/SDL.h>
@@ -7,10 +8,10 @@
 
 class Glyph;
 
-class SDLWindow : public Window 
+class SDLWindow : public WindowImp
 {
     public:
-        SDLWindow(std::string title);
+        SDLWindow(std::string title, Window *w);
         ~SDLWindow();
         void Redraw();
         void Raise();
@@ -18,6 +19,7 @@ class SDLWindow : public Window
         void Iconify();
         void Deiconify();
         
+        void SetContents(void);
         void DrawChar(char,int,int);
         void DrawRect(int,int,int,int);
         void FillRect(int,int,int,int);
@@ -27,6 +29,8 @@ class SDLWindow : public Window
         int CharHeight(char);
 
     private:
+        std::string _title;
+        Window *_w;
         SDL_Window *w;
         SDL_Renderer *r;
         TTF_Font *f;

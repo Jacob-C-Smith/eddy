@@ -29,11 +29,6 @@ EDDY_LIB_BASENAME = eddy
 EDDY_LIB = $(BUILD_DIR)/lib$(EDDY_LIB_BASENAME).$(SHARED_EXT)
 EDDY_BIN = $(BUILD_DIR)/eddy_bin
 
-# Types
-TYPE_DIR = type
-TYPES = $(if $(wildcard $(TYPE_DIR)/*/),$(notdir $(patsubst %/,%,$(wildcard $(TYPE_DIR)/*/))),)
-TYPE_LIBS = $(patsubst %,$(BUILD_DIR)/lib%.$(SHARED_EXT),$(TYPES))
-
 .PHONY: all clean info run 
 
 # Default target
@@ -53,18 +48,10 @@ $(BUILD_DIR)/%.o: $(EDDY_SRC_DIR)/%.cpp | $(BUILD_DIR)
 $(EDDY_LIB): $(EDDY_OBJ)
 	@$(CXX) -shared -o $@ $^ $(SDL_LIBS) 
 
-# Rules for type libraries
-define TYPE_RULE
-$(BUILD_DIR)/lib$(1).$(SHARED_EXT): $(wildcard $(TYPE_DIR)/$(1)/*.cpp) $(EDDY_LIB) | $(BUILD_DIR)
-	$$(CXX) $$(CXXFLAGS) -fPIC -shared -o $$@ $$^  $$(RPATH_FLAGS) -I$(TYPE_DIR)/$(1)
-endef
-
-$(foreach type,$(TYPES),$(eval $(call TYPE_RULE,$(type))))
-
 # Executables
 $(EDDY_BIN): main.cpp $(EDDY_LIB)
 	@printf "c++ $<\n"
-	@$(CXX) $(CXXFLAGS) -o $@ $< $(EDDY_LIB) $(TYPE_LIBS) $(SDL_LIBS) $(RPATH_FLAGS)
+	@$(CXX) $(CXXFLAGS) -o $@ $< $(EDDY_LIB) $(SDL_LIBS) $(RPATH_FLAGS)
 
 # Info
 info:
@@ -72,7 +59,6 @@ info:
 	@echo "eddy objects   : $(EDDY_OBJ)"
 	@echo "eddy library   : $(EDDY_LIB)"
 	@echo "eddy exec      : $(EDDY_BIN)"
-	@echo "type libs      : $(TYPE_LIBS)"
 
 # Clean
 clean:

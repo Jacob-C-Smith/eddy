@@ -2,43 +2,42 @@
 #include <sdl_window.hpp>
 
 #include <glyph.hpp>
+#include <unistd.h>
 
-SDLWindow::SDLWindow (std::string title) 
+SDLWindow::SDLWindow (std::string title, Window *w) 
 {
 
     _title = title;
+    _w = w;
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_CreateWindowAndRenderer(title.c_str(), 800, 600, SDL_WINDOW_HIGH_PIXEL_DENSITY, &this->w, &this->r);
+    SDL_CreateWindowAndRenderer(title.c_str(), 800, 720, SDL_WINDOW_HIGH_PIXEL_DENSITY, &this->w, &this->r);
 
     TTF_Init();
     
-    f = TTF_OpenFont("/System/Library/Fonts/Supplemental/Arial.ttf", 120.0f);
+    f = TTF_OpenFont("/System/Library/Fonts/Supplemental/Arial.ttf", 60.0f);
 }
 
 void SDLWindow::Redraw() 
 {
     bool done = false;
     
+
     while (!done) 
     {
         SDL_Event event;
-        while (SDL_PollEvent(&event)) 
-        {
-            if (event.type == SDL_EVENT_QUIT) 
-            {
-                done = true;
-            }
-        }
+        while (SDL_PollEvent(&event)) done = (event.type == SDL_EVENT_QUIT);
 
         SDL_SetRenderDrawColor(this->r,255,255,255,255);
         SDL_RenderClear(this->r);
         
         SDL_SetRenderDrawColor(this->r,0,0,0,255);
-        _contents->Draw(this);
+        _w->Draw();
 
         SDL_RenderPresent(this->r);
+
+        // usleep(300);
     }
 }
 
@@ -47,10 +46,12 @@ void SDLWindow::Lower(){}
 void SDLWindow::Iconify(){}
 void SDLWindow::Deiconify(){}
 
+void SDLWindow::SetContents() { }
+
 void SDLWindow::DrawChar(char c,int x,int y)
 {
 
-    SDL_Surface *t = TTF_RenderText_Blended(f, std::string{c}.c_str(), 1,SDL_Color{0,0,0,0});
+    SDL_Surface *t = TTF_RenderText_Blended(f, std::string{c}.c_str(), 1,SDL_Color{0,0,0,255});
     SDL_Texture *u = SDL_CreateTextureFromSurface(r, t);
     SDL_FRect dst{(float)x,(float)y,0,0};
 

@@ -5,8 +5,6 @@
 #include <list_iterator.hpp>
 
 #include <window.hpp>
-#include <sdl_window.hpp>
-#include <null_window.hpp>
 #include <point.hpp>
 #include <rect.hpp>
 #include <rectangle.hpp>
@@ -18,48 +16,47 @@
 #include <scroller.hpp>
 #include <gui_factory.hpp>
 #include <button.hpp>
+#include <application_window.hpp>
 
 int main ( int argc, const char *argv[] )
 {
     (void)argc;
     (void)argv;
 
-    Window *w = new SDLWindow("eddy");
+    Window *w = new ApplicationWindow("eddy");
     GUIFactory *f = GUIFactory::Instance();
-
-    Glyph *_g[] = 
-    {
-        new Row(),
-            new Column(),
-                new Row("composite"),
-                new Row("strategy"),
-            new Column(),
-                new Row("decorator"),
-                new Row("glyph"),
-                
-    };
-
-    Glyph *_b = f->CreateButton();
-    Glyph *_l = f->CreateLabel();
-
-    _b->Insert(_g[6], 0);
-    _l->Insert(_g[5], 0);
-
-    _g[1]->Insert(_g[2], 0);
-    _g[1]->Insert(_g[3], 1);
-
-    _g[4]->Insert(_l, 0);
-    _g[4]->Insert(_b, 1);
-
-    _g[0]->Insert(new Scroller(new Border(_g[1],1),32), 0);
-    _g[0]->Insert(new Border(_g[4],1), 1);
-
-    Glyph *h = _g[0];
-    Glyph *root = new Column();
-    root->Insert(h, 0);
-    w->SetContents(root);
-
-    w->Redraw();
+    Glyph *l = f->CreateLabel();
+    Glyph *b = f->CreateButton();
+    l->Insert(new Row{std::string{"pq"}}, 0);
+    b->Insert(new Row{std::string{"PQ"}}, 0);
     
+    Glyph *root = new Column(
+        new Border(
+            new Scroller(
+                new Column(
+                    new Row(
+                        new Character('a'),
+                        new Rectangle(Rect(0,0,50,100)),
+                        new Column(
+                            new Character('X'),
+                            l,
+                            new Character('Z')
+                        ),
+                        new Character('b')
+                    ),
+                    new Row(
+                        new Character('x'),
+                        new Rectangle(Rect(0,0,100,50)),
+                        new Character('y')
+                    ),
+                    b
+                ),
+            32),
+        8)
+    );
+
+    w->SetContents(root);
+    w->Redraw();
+
     return 0;
 }
